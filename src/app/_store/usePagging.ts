@@ -7,7 +7,7 @@ interface PaggingStore {
 }
 
 const usePagging = create<PaggingStore>((set) => ({
-    currentPage: null,
+    currentPage: "landing",
     setCurrentPage: (page) => set({ currentPage: page }),
 }));
 
