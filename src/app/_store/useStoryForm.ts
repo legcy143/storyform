@@ -13,6 +13,15 @@ interface Payload {
     prompt: Prompt,
     inputImage: string;
 }
+
+interface Portrait {
+    taskId: string;
+    status: string;
+    resultImage: string;
+    inputImage: string;
+    completedAt: string;
+}
+
 interface StoryFormState {
     word: string;
     setWord: (word: string) => void;
@@ -27,6 +36,11 @@ interface StoryFormState {
 
     isCreateLoading: boolean;
     createStoryForm: () => Promise<boolean>;
+
+    portrait: Portrait | null;
+    portraitFetchError: string | null;
+    fetchPortrait: (taskId: string) => Promise<boolean>;
+
 }
 
 const BASE_API_URL = "https://storyfrom.gokapturehub.com"
@@ -116,7 +130,25 @@ export const useStoryForm = create<StoryFormState>((set, get) => ({
         } finally {
             set({ isCreateLoading: false });
         }
+    },
 
+    portrait: null,
+    portraitFetchError: null,
+    fetchPortrait: async (taskId) => {
+        try {
+            const res = await axios.get(`${BASE_API_URL}/image/${taskId}`);
+            // console.log("Fetched portrait:", res.data);
+            set({ portrait: res.data });
+            return true;
+        } catch (error) {
+            console.error("Error fetching portrait:", error);
+            set({ portraitFetchError: "Failed to fetch portrait. Please try again later." });
+            return false;
+        }
     }
+
+
+
+
 
 }));
