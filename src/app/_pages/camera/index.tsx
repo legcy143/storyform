@@ -4,10 +4,14 @@ import React from 'react'
 import { LuCamera, LuCheck, LuCross } from 'react-icons/lu';
 import { MdOutlineKeyboardArrowLeft, MdOutlineRefresh } from 'react-icons/md';
 import NotSupportErrorMessage from './_components/NotSupportErrorMessage';
+import { useStoryForm } from '@/app/_store/useStoryForm';
 
 export default function Camera() {
   const setCurrentPage = usePagging(state => state.setCurrentPage);
+  const resetWord = useStoryForm(s => s.resetWord);
+  
   const GoPrevious = () => {
+    resetWord()
     setCurrentPage("paragraphForm")
   }
 

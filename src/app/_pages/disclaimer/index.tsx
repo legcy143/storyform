@@ -1,4 +1,5 @@
 import usePagging from '@/app/_store/usePagging';
+import { useStoryForm } from '@/app/_store/useStoryForm';
 import ThemeButton from '@/components/ui/ThemeButton';
 import { Checkbox } from '@heroui/react';
 import React from 'react'
@@ -6,7 +7,9 @@ import { MdOutlineKeyboardArrowLeft } from 'react-icons/md';
 
 export default function Disclaimer() {
   const setCurrentPage = usePagging(state => state.setCurrentPage);
+  const resetWord = useStoryForm(s => s.resetWord);
   const GoPrevious = () => {
+    resetWord()
     setCurrentPage("paragraphForm")
   }
 

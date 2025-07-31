@@ -3,10 +3,13 @@ import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import React from 'react'
 import { LuCircleCheck, LuCircleX, LuInfo } from 'react-icons/lu';
 import usePagging from '@/app/_store/usePagging';
+import { useStoryForm } from '@/app/_store/useStoryForm';
 
 export default function CameraInstruction() {
   const setCurrentPage = usePagging(state => state.setCurrentPage);
+  const resetWord = useStoryForm(s => s.resetWord); 
   const GoPrevious = () => {
+    resetWord()
     setCurrentPage("paragraphForm")
   }
 
