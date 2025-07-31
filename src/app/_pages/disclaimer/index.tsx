@@ -1,19 +1,25 @@
+"use client"
 import usePagging from '@/app/_store/usePagging';
 import { useStoryForm } from '@/app/_store/useStoryForm';
 import ThemeButton from '@/components/ui/ThemeButton';
 import { Checkbox } from '@heroui/react';
-import React from 'react'
+import React, { useState } from 'react'
 import { MdOutlineKeyboardArrowLeft } from 'react-icons/md';
 
 export default function Disclaimer() {
   const setCurrentPage = usePagging(state => state.setCurrentPage);
   const resetWord = useStoryForm(s => s.resetWord);
+  const [isAgreed, setIsAgreed] = useState(false)
   const GoPrevious = () => {
     resetWord()
     setCurrentPage("paragraphForm")
   }
 
   const handleNext = () => {
+    if (!isAgreed) {
+      alert("Please agree to the terms and conditions before proceeding.")
+      return;
+    }
     setCurrentPage("camera")
   }
   return (
@@ -40,13 +46,15 @@ export default function Disclaimer() {
         </li>
       </div>
       <div>
-        <Checkbox ><span className='text-white font-bold capitalize'> I agree to the terms and conditions</span> </Checkbox>
+        <Checkbox checked={isAgreed} onChange={(e) => setIsAgreed(e.target.checked)}>
+          <span className='text-white font-bold capitalize'> I agree to the terms and conditions</span>
+        </Checkbox>
       </div>
       <div className='flex flex-row justify-between items-center'>
         <ThemeButton isIconOnly={true} onPress={GoPrevious}>
           <MdOutlineKeyboardArrowLeft className='size-7' />
         </ThemeButton>
-        <ThemeButton onPress={handleNext}>Next</ThemeButton>
+        <ThemeButton disabled={!isAgreed} onPress={handleNext}>Next</ThemeButton>
       </div>
     </section>
   )
