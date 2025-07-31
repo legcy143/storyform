@@ -19,11 +19,13 @@ interface StoryFormState {
     resetWord: () => void;
     payload: Payload;
     setEmail: (email: string) => void;
+    setImage: (image: string) => void;
     parseWord: () => {
         text: string;
         prompt: Prompt;
     }
 
+    isCreateLoading: boolean;
     createStoryForm: () => Promise<boolean>;
 }
 
@@ -59,6 +61,13 @@ export const useStoryForm = create<StoryFormState>((set, get) => ({
         }
     })),
 
+    setImage: (image: string) => set((state) => ({
+        payload: {
+            ...state.payload,
+            inputImage: image,
+        }
+    })),
+
     parseWord: () => {
         const word = get().word;
         const prompt = {
@@ -85,8 +94,10 @@ export const useStoryForm = create<StoryFormState>((set, get) => ({
         return { text, prompt }
     },
 
+    isCreateLoading: false,
     createStoryForm: async () => {
         try {
+            set({ isCreateLoading: true });
             const payload = get().payload
             const prompt = get().parseWord().prompt;
 
@@ -96,16 +107,14 @@ export const useStoryForm = create<StoryFormState>((set, get) => ({
             }
             console.log("Request Payload:", requestPayload);
 
-            // const res = await axios.post(`${BASE_API_URL}/create`, {
-            //     requestPayload,
-            // });
-            // console.log("Story form created successfully", res.data);
+            const res = await axios.post(`${BASE_API_URL}/create`, requestPayload);
+            console.log("Story form created successfully", res.data);
             return true;
         } catch (error) {
             console.log(error)
             return false;
         } finally {
-            console.log("finally ");
+            set({ isCreateLoading: false });
         }
 
     }

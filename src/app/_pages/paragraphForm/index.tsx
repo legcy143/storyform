@@ -15,7 +15,6 @@ export default function ParagraphForm() {
 
   const handleOnChange = (key: string, value: string) => {
     value = value.replaceAll(" ", "_space_")
-    console.log("value", value)
     let newWord = word.replace(key, `${key},v=${value}`)
     setWord(newWord)
   }

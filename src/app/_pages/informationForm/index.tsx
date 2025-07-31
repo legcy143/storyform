@@ -11,14 +11,16 @@ export default function InformationForm() {
   const setEmail = useStoryForm(s => s.setEmail)
   const email = useStoryForm(s => s.payload.email)
   const createStoryForm = useStoryForm(s => s.createStoryForm)
+  const isCreateLoading = useStoryForm(s => s.isCreateLoading)
 
   const GoPrevious = () => {
     setCurrentPage("camera")
   }
 
   const handleNext = async () => {
-    await createStoryForm();
-    setCurrentPage("submitted")
+    let res = await createStoryForm();
+    if (res)
+      setCurrentPage("submitted")
   }
   return (
     <section className='animate-appearance-in border border-gray-400/50 rounded-2xl p-5 bg-gray-500/50 backdrop-blur-sm  flex flex-col gap-7 m-auto'>
@@ -40,10 +42,13 @@ export default function InformationForm() {
       </div>
 
       <div className='flex flex-row justify-between items-center'>
-        <ThemeButton isIconOnly={true} onPress={GoPrevious}>
+        <ThemeButton isIconOnly={true} onPress={GoPrevious} isDisabled={isCreateLoading}>
           <MdOutlineKeyboardArrowLeft className='size-7' />
         </ThemeButton>
-        <ThemeButton onPress={handleNext}> <BsStars /> submit</ThemeButton>
+        <ThemeButton
+          isDisabled={!email.includes("@") || !email.includes(".")}
+          isLoading={isCreateLoading}
+          onPress={handleNext}> <BsStars /> submit</ThemeButton>
       </div>
     </section>
   )

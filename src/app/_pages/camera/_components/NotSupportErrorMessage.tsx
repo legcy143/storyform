@@ -1,12 +1,29 @@
+import { Button, Card, CardBody } from '@heroui/react'
 import React from 'react'
+import { LuCamera } from 'react-icons/lu'
 
-export default function NotSupportErrorMessage() {
+export default function CameraErrorMessage({ cameraError, startCamera }: { cameraError: string, startCamera: () => void }) {
     return (
-        <div className='text-center text-lg flex flex-col gap-3'>
-            <p className='font-semibold text-2xl'>Your device is not supported for this feature.</p>
-            <p>
-                Sorry , looking like your device is not supported or may be your web camera not working . Please try again with a different device or check your browser settings and permissions.
-            </p>
-        </div>
+        <Card className="shadow-2xl bg-white/95 backdrop-blur-sm">
+            <CardBody className="p-8">
+                <div className="mb-6">
+                    <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <LuCamera className="w-8 h-8 text-red-500" />
+                    </div>
+                    <h3 className="text-xl font-bold text-gray-800 mb-2">
+                        Camera Access Required
+                    </h3>
+                    <p className="text-red-500 text-base mb-4">{cameraError}</p>
+                </div>
+                <Button
+                    color="primary"
+                    className="bg-black text-white font-semibold hover:bg-gray-800"
+                    size="lg"
+                    onPress={startCamera}
+                >
+                    Try Again
+                </Button>
+            </CardBody>
+        </Card>
     )
 }
