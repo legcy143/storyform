@@ -47,7 +47,7 @@ export default function Disclaimer() {
       </div>
       <div>
         <Checkbox checked={isAgreed} onChange={(e) => setIsAgreed(e.target.checked)}>
-          <span className='text-white font-bold capitalize'> I agree to the terms and conditions</span>
+          <span className='text-white font-bold capitalize'> I agree to the terms and conditions <b className='text-red-500'>*</b> </span>
         </Checkbox>
       </div>
       <div className='flex flex-row justify-between items-center'>
