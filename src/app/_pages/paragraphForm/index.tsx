@@ -14,6 +14,8 @@ export default function ParagraphForm() {
   const parseWord = useStoryForm(s => s.parseWord)
 
   const handleOnChange = (key: string, value: string) => {
+    value = value.replaceAll(" ", "_space_")
+    console.log("value", value)
     let newWord = word.replace(key, `${key},v=${value}`)
     setWord(newWord)
   }
@@ -39,7 +41,7 @@ export default function ParagraphForm() {
               return <input
                 key={i}
                 placeholder={placeholder.replace("_", " ")}
-                value={value}
+                value={value.replaceAll("_space_", " ")}
                 required
                 onChange={(e) => handleOnChange(placeholder, e.target.value)}
                 className='field-sizing-content min-w-[5rem] max-w-full outline-none border-b border-primary text-center text-primary placeholder:text-gray-400 px-1 transition-all'

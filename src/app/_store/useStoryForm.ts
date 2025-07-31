@@ -72,7 +72,7 @@ export const useStoryForm = create<StoryFormState>((set, get) => ({
             if (e.startsWith("%")) {
                 const inputVal = e.replaceAll("%", "").split(",")
                 const label = inputVal?.[0].replace("l=", "")
-                const value = inputVal?.[1].replace("v=", "")
+                const value = inputVal?.[1].replace("v=", "").replaceAll("_space_", " ");
                 let key = promptKeys[label];
                 if (key) {
                     prompt[key] = value;
@@ -94,11 +94,12 @@ export const useStoryForm = create<StoryFormState>((set, get) => ({
                 ...payload,
                 prompt,
             }
+            console.log("Request Payload:", requestPayload);
 
-            const res = await axios.post(`${BASE_API_URL}/create`, {
-                requestPayload,
-            });
-            console.log("Story form created successfully", res.data);
+            // const res = await axios.post(`${BASE_API_URL}/create`, {
+            //     requestPayload,
+            // });
+            // console.log("Story form created successfully", res.data);
             return true;
         } catch (error) {
             console.log(error)
