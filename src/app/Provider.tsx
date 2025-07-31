@@ -9,7 +9,7 @@ export default function Provider({ children }: { children: React.ReactNode }) {
             <div className='bg-primary fixed -bottom-[5rem] -right-[5rem] size-[20rem] blur-[15rem]' />
             {/* <h1 className='text-2xl font-bold'>Story Form</h1> */}
             <img className='h-[3rem]' src="https://gkh-images.s3.amazonaws.com/fc217aa1-6cf7-434b-bb6f-9e4b2d9ca5e2_png.png" alt="logo" />
-            <section className='w-full max-w-[40rem] mx-auto '>
+            <section>
                 {children}
             </section>
             <footer className='mt-8 text-sm text-gray-500'>

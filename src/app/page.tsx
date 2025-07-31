@@ -14,7 +14,9 @@ export default function Home() {
   const Page = StoryFormPages[currentPage as keyof typeof StoryFormPages];
 
   return <Suspense fallback={<div></div>}>
-    <Page />
+    <section className='w-full max-w-[40rem] mx-auto '>
+      <Page />
+    </section>
   </Suspense>
 
 }
