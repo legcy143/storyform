@@ -40,7 +40,7 @@ export default function Camera() {
     width: number;
     height: number;
   } | null>(null);
-  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('environment');
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user');
   const timerOptions = [
     { value: 0, label: 'Instant', icon: '0' },
     { value: 3, label: '3 seconds', icon: '3' },
