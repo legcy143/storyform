@@ -1,12 +1,16 @@
 import usePagging from '@/app/_store/usePagging';
+import { useStoryForm } from '@/app/_store/useStoryForm';
 import ThemeButton from '@/components/ui/ThemeButton';
 import { Divider } from '@heroui/react';
 import React from 'react'
 
 export default function ParagraphView() {
   const setCurrentPage = usePagging(s => s.setCurrentPage)
+  const word = useStoryForm(s => s.parseWord().text)
+  const resetWord = useStoryForm(s => s.resetWord)
 
   const handleCreateAnother = () => {
+    resetWord()
     setCurrentPage('paragraphForm')
   }
 
@@ -20,9 +24,7 @@ export default function ParagraphView() {
         <h1 className='text-center text-3xl md:text-4xl font-semibold text-primary' >The Big Reveal</h1>
         <Divider className='bg-gray-600/50 h-[1.5px] mb-5' />
         <div className='flex flex-col gap-3 text-xl font-semibold'>
-          <p>word goes here</p>
-          <p>word goes here</p>
-          <p>The crowd went wild</p>
+          <p>{word}</p>
         </div>
       </section>
       <div className='w-fit mx-auto space-x-5'>
