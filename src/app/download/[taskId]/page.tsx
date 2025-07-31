@@ -71,7 +71,7 @@ export default function page() {
                     <Img src={portrait.resultImage} alt="result" className='max-h-[20rem] object-contain rounded-xl bg-red-500 w-fit' />
                 ) : (
                     <div>
-                        <object data={"/loading.gif"} type="image/gif"></object>
+                         <img src="https://gkh-images.s3.amazonaws.com/40e38748-dd5d-4795-8ab2-829f0b18a585_Loading.gif"  />
                         <p>Processing your image...</p>
                     </div>
                 )
