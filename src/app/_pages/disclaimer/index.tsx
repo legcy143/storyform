@@ -54,7 +54,7 @@ export default function Disclaimer() {
         <ThemeButton isIconOnly={true} onPress={GoPrevious}>
           <MdOutlineKeyboardArrowLeft className='size-7' />
         </ThemeButton>
-        <ThemeButton disabled={!isAgreed} onPress={handleNext}>Next</ThemeButton>
+        <ThemeButton isDisabled={!isAgreed} onPress={handleNext}>Next</ThemeButton>
       </div>
     </section>
   )
