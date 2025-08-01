@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { useSearchParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import { Button } from '@heroui/react';
+import Img from '../ui/Img';
 
 const HorizontalGallerySliderAnimation = ({ data }: { data: any[] }) => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -92,33 +93,34 @@ const HorizontalGallerySliderAnimation = ({ data }: { data: any[] }) => {
                     transition: 'width 0.5s, height 0.5s',
                 }}
             >
-                {data.map((item, index) => (
-                    <>
-                        {
-                            <motion.div
-                                layout
-                                initial={{ transform: 'scale3d(0, 0, 1)' }}
-                                animate={{
-                                    transform: 'scale3d(1, 1, 1)',
-                                    transition: { duration: 0.6, ease: [0.83, 0, 0.17, 1] },
-                                }}
-                                key={`${item.imageLink}-${index}`}
-                                className="flex flex-col items-center min-w-[250px] relative  pb-[3rem] "
-                            >
-                                <motion.img
-                                    src={item.imageLink}
-                                    alt="Image"
-                                    className="h-96 object-cover rounded-2xl shadows-xl"
-                                />
-                                {isShowQr && (
-                                    <div className="size-[5rem] bg-white border-5 rounded-sm shadow-md border-white absolute bottom-[0.5rem] ">
-                                        <QRCode className="w-full h-full" value={item.imageLink} />
-                                    </div>
-                                )}
-                            </motion.div>
-                        }
-                    </>
-                ))}
+                {data.map((item, index) => {
+                    if (!item.resultImage) {
+                        return null;
+                    }
+                    return (
+                        <motion.div
+                            layout
+                            initial={{ transform: 'scale3d(0, 0, 1)' }}
+                            animate={{
+                                transform: 'scale3d(1, 1, 1)',
+                                transition: { duration: 0.6, ease: [0.83, 0, 0.17, 1] },
+                            }}
+                            key={`${item.imageLink}-${index}`}
+                            className="flex flex-col items-center min-w-[250px] relative  pb-[3rem] "
+                        >
+                            <Img
+                                src={item.resultImage}
+                                alt="Image"
+                                className="h-96 object-cover rounded-2xl shadows-xl"
+                            />
+                            {isShowQr && (
+                                <div className="size-[5rem] bg-white border-5 rounded-sm shadow-md border-white absolute bottom-[0.5rem] ">
+                                    <QRCode className="w-full h-full" value={item.resultImage} />
+                                </div>
+                            )}
+                        </motion.div>
+                    );
+                })}
             </div>
             <div
                 className="flex gap-2"
@@ -129,7 +131,7 @@ const HorizontalGallerySliderAnimation = ({ data }: { data: any[] }) => {
                     zIndex: '999',
                 }}
             >
-                <Button
+                {/* <Button
                     style={{
                         display: isRotateBtn ? 'block' : 'none',
                     }}
@@ -137,7 +139,7 @@ const HorizontalGallerySliderAnimation = ({ data }: { data: any[] }) => {
                     onPress={rotatePage}
                 >
                     Rotate
-                </Button>
+                </Button> */}
             </div>
         </>
     );

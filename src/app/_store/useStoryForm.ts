@@ -140,6 +140,7 @@ export const useStoryForm = create<StoryFormState>((set, get) => ({
     portraitFetchError: null,
     fetchPortrait: async (taskId) => {
         try {
+            set({ portraitFetchError: null });
             const res = await axios.get(`${BASE_API_URL}/image/${taskId}`);
             // console.log("Fetched portrait:", res.data);
             set({ portrait: res.data });
