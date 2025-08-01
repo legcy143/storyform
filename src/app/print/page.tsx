@@ -112,7 +112,7 @@ export default function page() {
                                 </Button>
                             </Tooltip>
                             <Tooltip content="Delete">
-                                <Button color='danger' variant='light' isIconOnly>
+                                <Button isDisabled color='danger' variant='light' isIconOnly>
                                     <LuTrash2 />
                                 </Button>
                             </Tooltip>
