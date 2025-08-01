@@ -1,5 +1,5 @@
 "use client"
-import React, { useCallback, useEffect, useMemo } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { useStoryForm } from '../_store/useStoryForm'
 import TableUI from '../../components/ui/TableUI';
 import { Button, Chip, Spinner, Tooltip } from '@heroui/react';
@@ -29,6 +29,31 @@ export default function page() {
     useEffect(() => {
         console.log("Portraits fetched:", portraits);
     }, [portraits])
+
+
+    const [isLoading, setIsLoading] = useState(false);
+
+    const handleDownload = async (image: string, taskId: string) => {
+        setIsLoading(true);
+        try {
+            const response = await fetch(image, { mode: 'cors' });
+            const blob = await response.blob();
+            const url = window.URL.createObjectURL(blob);
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `portrait_${taskId}.png`;
+            document.body.appendChild(link);
+            link.click();
+
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (err) {
+            console.error('Download failed:', err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const renderCell = useCallback(
         (data: any, columnKey: any) => {
@@ -69,9 +94,22 @@ export default function page() {
                             className='capitalize'
                         >{cellValue}</Chip>
                     );
+                case 'completedAt':
+                    let value = cellValue ? new Date(cellValue).toLocaleString() : "processing...";
+                    return (
+                        <p className="font-semibold text-small capitalize">{value}</p>
+                    );
                 case 'actions':
                     return (
                         <div className="relative flex justify-center items-center gap-5">
+                            <Tooltip content="Download Result Image">
+                                <Button color='primary' variant='light' isIconOnly onPress={() => handleDownload(data?.resultImage, data.taskId)}
+                                    isLoading={isLoading}
+                                    isDisabled={isProcessing}
+                                >
+                                    <LuDownload />
+                                </Button>
+                            </Tooltip>
                             <Tooltip content="Delete">
                                 <Button color='danger' variant='light' isIconOnly>
                                     <LuTrash2 />
