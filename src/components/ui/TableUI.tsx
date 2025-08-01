@@ -30,7 +30,7 @@ import { debounce } from 'lodash';
 import { LuChevronDown, LuSearch } from 'react-icons/lu';
 
 
- function Capitalize(str: string) {
+function Capitalize(str: string) {
   return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
@@ -177,6 +177,7 @@ function TableUI({
 
   const filteredItems = React.useMemo(() => {
     if (isServerSideSearch) return tableData;
+
     let filteredUsers = [...tableData];
 
     if (hasSearchFilter) {
@@ -185,12 +186,15 @@ function TableUI({
       );
     }
     if (
-      statusFilter !== 'all' &&
+      typeof statusFilter === 'string' && statusFilter !== 'all' &&
       Array.from(statusFilter).length !== statusOptions.length
     ) {
-      filteredUsers = filteredUsers.filter((data) =>
-        Array.from(statusFilter).includes(data?.status as string),
-      );
+      filteredUsers = filteredUsers.filter((data) => {
+        console.log("stattusFilter", statusFilter);
+        console.log("data", data?.status);
+        return Array.from(statusFilter.split(',')).includes(data?.status as string);
+      });
+      console.log("data", filteredUsers);
     }
 
     return filteredUsers;
@@ -351,11 +355,15 @@ function TableUI({
                   disallowEmptySelection
                   aria-label="Table Columns"
                   closeOnSelect={false}
-                  selectedKeys={statusFilter}
+                  selectedKeys={statusFilter.split(',')}
                   selectionMode="multiple"
-                  onSelectionChange={(keys) =>
-                    setStatusFilter(Array.from(keys).join(','))
+                  onChange={(keys) =>
+                    console.log("keys from on change", keys)
                   }
+                  onSelectionChange={(keys) => {
+                    console.log("keys from on selection change", keys);
+                    setStatusFilter(Array.from(keys).join(',')) 
+                  }}
                 >
                   {statusOptions.map((status) => (
                     <DropdownItem key={status.uid} className="capitalize">
@@ -405,7 +413,7 @@ function TableUI({
               className={cn(
                 'flex items-center text-default-400 text-small',
                 ((isServerSideSearch && filterValue.length > 0) || isLoading) &&
-                  'text-opacity-disabled',
+                'text-opacity-disabled',
               )}
             >
               Rows per page:

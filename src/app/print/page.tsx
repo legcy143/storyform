@@ -2,10 +2,16 @@
 import React, { useCallback, useEffect, useMemo } from 'react'
 import { useStoryForm } from '../_store/useStoryForm'
 import TableUI from '../../components/ui/TableUI';
+import { Button, Chip, Spinner, Tooltip } from '@heroui/react';
+import { LuDownload, LuTrash, LuTrash2 } from 'react-icons/lu';
 
 const columns = [
+    // { name: 'TASK ID', uid: 'taskId', sortable: true },
     { name: 'EMAIL', uid: 'email', sortable: true },
+    { name: 'INPUT IMAGE', uid: 'inputImage', sortable: true },
+    { name: 'OUTPUT IMAGE', uid: 'resultImage', sortable: true },
     { name: 'STATUS', uid: 'status', sortable: true },
+    { name: 'COMPLETED AT', uid: 'completedAt', sortable: true },
     { name: 'ACTIONS', uid: 'actions' },
 ];
 
@@ -25,12 +31,31 @@ export default function page() {
     }, [portraits])
 
     const renderCell = useCallback(
-        (event: any, columnKey: any) => {
-            const cellValue = event[columnKey];
+        (data: any, columnKey: any) => {
+            const cellValue = data[columnKey];
+            let isProcessing = data["status"] === "processing";
             switch (columnKey) {
                 case 'sr no':
                     return (
                         <p className="font-semibold text-small capitalize">{cellValue}</p>
+                    );
+                case 'inputImage':
+                    return (
+                        <div className="relative flex justify-center items-center">
+                            <img src={cellValue} alt="Input" className="w-16 h-16 object-cover" />
+                        </div>
+                    );
+                case 'resultImage':
+                    if (isProcessing) {
+                        return (
+                            <div className='h-[10rem] flex flex-col items-center justify-center gap-2'>
+                                <Spinner />
+                                <p>processing...</p>
+                            </div>
+                        );
+                    }
+                    return (
+                        <img src={cellValue} alt="Result" className="w-full h-[10rem] object-contain" />
                     );
                 case 'email':
                     return (
@@ -38,18 +63,20 @@ export default function page() {
                     );
                 case 'status':
                     return (
-                        <p className="font-semibold text-small capitalize">{cellValue}</p>
+                        <Chip
+                            variant='flat'
+                            color={cellValue === "completed" ? "success" : "warning"}
+                            className='capitalize'
+                        >{cellValue}</Chip>
                     );
                 case 'actions':
                     return (
                         <div className="relative flex justify-center items-center gap-5">
-                            {/* <DeleteModal
-                onDelete={() => {
-                  deleteRegistration(event?._id);
-                }}
-                isLoading={event.isDeleting}
-                eventName={event?.name}
-              /> */}
+                            <Tooltip content="Delete">
+                                <Button color='danger' variant='light' isIconOnly>
+                                    <LuTrash2 />
+                                </Button>
+                            </Tooltip>
                         </div>
                     );
                 default:
@@ -68,13 +95,14 @@ export default function page() {
 
 
     return (
-        <section className='w-full h-full max-w-[60rem]' >
+        <section className='w-full h-full max-w-[70rem] -my-12' >
             <TableUI
                 selectionMode='none'
                 tableData={tableData}
                 columns={columns}
+                numberOfDataPerPage={5}
                 renderCell={renderCell}
-                className="w-full h-full"
+                className="w-full h-[95%]"
                 isLoading={!portraits}
                 statusOptions={[
                     {
@@ -84,7 +112,7 @@ export default function page() {
                     {
                         name: "PROCESSING",
                         uid: "processing"
-                    }
+                    },
                 ]}
                 title='Portraits'
                 searchByVariable='email'
