@@ -4,6 +4,7 @@ import { useStoryForm } from '../_store/useStoryForm'
 import TableUI from '../../components/ui/TableUI';
 import { Button, Chip, Spinner, Tooltip } from '@heroui/react';
 import { LuDownload, LuTrash, LuTrash2 } from 'react-icons/lu';
+import Img from '@/components/ui/Img';
 
 const columns = [
     // { name: 'TASK ID', uid: 'taskId', sortable: true },
@@ -67,7 +68,7 @@ export default function page() {
                 case 'inputImage':
                     return (
                         <div className="relative flex justify-center items-center">
-                            <img src={cellValue} alt="Input" className="w-16 h-16 object-cover" />
+                            <Img src={cellValue} alt="Input" className="w-16 h-16 object-cover" />
                         </div>
                     );
                 case 'resultImage':
@@ -80,7 +81,7 @@ export default function page() {
                         );
                     }
                     return (
-                        <img src={cellValue} alt="Result" className="w-full h-[10rem] object-contain" />
+                        <Img src={cellValue} alt="Result" className="w-full h-[10rem] object-contain" />
                     );
                 case 'email':
                     return (
